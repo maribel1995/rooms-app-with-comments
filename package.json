@@ -1,0 +1,31 @@
+{
+  "name": "rooms-app-with-comments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maribel1995/rooms-app-with-comments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maribel1995/rooms-app-with-comments/issues"
+  },
+  "homepage": "https://github.com/maribel1995/rooms-app-with-comments#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.4",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-server": "^0.7.0",
+    "hbs": "^4.0.2",
+    "mongoose": "^5.4.15",
+    "nodemon": "^1.18.10",
+    "path": "^0.12.7"
+  }
+}

@@ -1,0 +1,26 @@
+.main{
+    display:flex;
+    margin-top: 50px;
+}
+.content{
+    width: 1080px;
+    margin: 0 auto;
+}
+h1{
+    padding: 0;
+    margin: 0;
+}
+.vertical-menu{
+width: 15%;
+margin-left: 20px;
+}
+.nav-link{
+    text-decoration: none;
+    color: #ffffff;
+}
+.nav-link:hover{
+    color: #ffffffc4;
+}
+.button-wrapper{
+    margin-top:10px;
+}

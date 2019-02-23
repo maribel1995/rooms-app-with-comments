@@ -1,0 +1,39 @@
+<div class="box">
+    <div class="container">
+        <h3>Add new user</h3>
+        <hr>
+        <form method="POST" action="/users/{{user._id}}">
+            <div class="form-group">
+                <label for="exampleInputName">Fullname</label>
+                <input type="text" name="name" class="form-control" id="exampleInputName" aria-describedby=""
+                    placeholder="Joana Dark" value="{{user.name}}">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Enter email" value="{{user.email}}">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                    else.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                    placeholder="Password" value={{user.password}}>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputImageUrl">Image URL</label>
+                <input type="text" name="imageUrl" class="form-control" id="exampleInputImageUrl" aria-describedby=""
+                    placeholder="http://mypic.com" value="{{user.imageUrl}}">
+            </div>
+            <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+        </form>
+        <div class="button-wrapper">
+        <a href="/users/{{user._id}}/delete"><button type="button" class="btn btn-danger btn-lg btn-block">Delete User</button></a>
+        </div>
+        <a href="/users">Back to the users list</a>
+    </div>
+</div>
