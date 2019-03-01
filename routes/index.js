@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require('../models/user');
 const Room = require('../models/room');
 const uploadCloud = require('../config/cloudinary.js');
+const bcrypt = require('bcrypt');
+const bcryptSalt = 10;
 
 //GET => render home
 router.get('/', (req, res, next) => {
@@ -27,12 +29,23 @@ router.get('/users', (req, res, next) => {
 });
 //POST => create a new user to db
 router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
+    
+
+    const {
+        name,
+        email,
+        password
+    } = req.body;
+
+    const salt = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(password, salt);
     const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        imgName: req.file.originalname,
-        imgPath : req.file.url
+        name,
+        email,
+        imgName : req.file.originalname,
+        imgPath : req.file.url,
+        password : hashPass
+        
     });
 
     newUser.save(error => {
@@ -49,7 +62,9 @@ router.get('/users/:user_id/edit', (req, res, next) => {
         if (error) {
             next(error);
         } else {
-            res.render('user/edit', { user })
+            res.render('user/edit', {
+                user
+            })
         }
     })
 });
@@ -59,6 +74,7 @@ router.post('/users/:user_id', uploadCloud.single('photo'), (req, res, next) => 
     User.findById(req.params.user_id, (error, user) => {
         user.name = req.body.name;
         user.email = req.body.email;
+        user.password = req.body.password;
         user.imgName = req.file.originalname;
         user.imgPath = req.file.url;
         user.save(error => {
@@ -70,11 +86,13 @@ router.post('/users/:user_id', uploadCloud.single('photo'), (req, res, next) => 
         })
 
     })
-})
+});
 
 //DELETE => remove the user from DB
 router.get('/users/:user_id/delete', (req, res, next) => {
-    User.remove({ _id: req.params.user_id }, error => {
+    User.remove({
+        _id: req.params.user_id
+    }, error => {
         if (error) {
             next(error);
         } else {
@@ -108,7 +126,7 @@ router.post('/rooms', uploadCloud.single('photo'), (req, res, next) => {
         description: req.body.description,
         //owner: req.body.owner,
         imgName: req.file.originalname,
-        imgPath : req.file.url
+        imgPath: req.file.url
     });
 
     newRoom.save(error => {
@@ -126,17 +144,19 @@ router.get('/rooms/:room_id/edit', (req, res, next) => {
         if (error) {
             next(error);
         } else {
-            res.render('room/edit', { room })
+            res.render('room/edit', {
+                room
+            })
         }
     })
 });
 
 //POST => save updates in the database
-router.post('/rooms/:room_id', uploadCloud.single('photo'),(req, res, next) => {
+router.post('/rooms/:room_id', uploadCloud.single('photo'), (req, res, next) => {
     Room.findById(req.params.room_id, (error, room) => {
         room.name = req.body.name;
         room.description = req.body.description,
-        room.imgName = req.file.originalname;
+            room.imgName = req.file.originalname;
         room.imgPath = req.file.url;
         room.save(error => {
             if (error) {
@@ -151,7 +171,9 @@ router.post('/rooms/:room_id', uploadCloud.single('photo'),(req, res, next) => {
 
 //DELETE => remove the room from DB
 router.get('/rooms/:room_id/delete', (req, res, next) => {
-    Room.remove({ _id: req.params.room_id }, error => {
+    Room.remove({
+        _id: req.params.room_id
+    }, error => {
         if (error) {
             next(error);
         } else {
