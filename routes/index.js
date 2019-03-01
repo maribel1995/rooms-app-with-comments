@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const Room = require('../models/room');
+const uploadCloud = require('../config/cloudinary.js');
 
 //GET => render home
 router.get('/', (req, res, next) => {
@@ -25,12 +26,13 @@ router.get('/users', (req, res, next) => {
     })
 });
 //POST => create a new user to db
-router.post('/users', (req, res, next) => {
+router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
     const newUser = new User({
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        imageUrl: req.body.imageUrl
+        imgName: req.file.originalname,
+        imgPath : req.file.url
     });
 
     newUser.save(error => {
@@ -44,21 +46,21 @@ router.post('/users', (req, res, next) => {
 //GET => get the form pre-filled with the details of one user
 router.get('/users/:user_id/edit', (req, res, next) => {
     User.findById(req.params.user_id, (error, user) => {
-        if(error){
+        if (error) {
             next(error);
-        }else{
-            res.render('user/edit', {user})
+        } else {
+            res.render('user/edit', { user })
         }
     })
 });
 
 //POST => save updates in the database
-router.post('/users/:user_id', (req, res, next) => {
+router.post('/users/:user_id', uploadCloud.single('photo'), (req, res, next) => {
     User.findById(req.params.user_id, (error, user) => {
         user.name = req.body.name;
         user.email = req.body.email;
-        user.password = req.body.password;
-        user.imageUrl = req.body.imageUrl;
+        user.imgName = req.file.originalname;
+        user.imgPath = req.file.url;
         user.save(error => {
             if (error) {
                 next(error);
@@ -66,16 +68,16 @@ router.post('/users/:user_id', (req, res, next) => {
                 res.redirect(`/users`);
             }
         })
-        
+
     })
 })
 
 //DELETE => remove the user from DB
 router.get('/users/:user_id/delete', (req, res, next) => {
-    User.remove({_id: req.params.user_id}, error => {
-        if(error){
+    User.remove({ _id: req.params.user_id }, error => {
+        if (error) {
             next(error);
-        }else{
+        } else {
             res.redirect('/users')
         }
     })
@@ -100,12 +102,13 @@ router.get('/rooms/new', (req, res, next) => {
     res.render('room/new');
 });
 //POST => create a new user to db
-router.post('/rooms', (req, res, next) => {
+router.post('/rooms', uploadCloud.single('photo'), (req, res, next) => {
     const newRoom = new Room({
         name: req.body.name,
         description: req.body.description,
         //owner: req.body.owner,
-        imageUrl: req.body.imageUrl
+        imgName: req.file.originalname,
+        imgPath : req.file.url
     });
 
     newRoom.save(error => {
@@ -116,5 +119,45 @@ router.post('/rooms', (req, res, next) => {
         }
     })
 });
+
+//GET => get the form pre-filled with the details of one room
+router.get('/rooms/:room_id/edit', (req, res, next) => {
+    Room.findById(req.params.room_id, (error, room) => {
+        if (error) {
+            next(error);
+        } else {
+            res.render('room/edit', { room })
+        }
+    })
+});
+
+//POST => save updates in the database
+router.post('/rooms/:room_id', uploadCloud.single('photo'),(req, res, next) => {
+    Room.findById(req.params.room_id, (error, room) => {
+        room.name = req.body.name;
+        room.description = req.body.description,
+        room.imgName = req.file.originalname;
+        room.imgPath = req.file.url;
+        room.save(error => {
+            if (error) {
+                next(error);
+            } else {
+                res.redirect(`/rooms`);
+            }
+        })
+
+    })
+});
+
+//DELETE => remove the room from DB
+router.get('/rooms/:room_id/delete', (req, res, next) => {
+    Room.remove({ _id: req.params.room_id }, error => {
+        if (error) {
+            next(error);
+        } else {
+            res.redirect('/rooms')
+        }
+    })
+})
 
 module.exports = router;

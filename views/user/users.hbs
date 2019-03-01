@@ -1,7 +1,7 @@
 <div class="box">
     <div class="container">
         <h1>Users
-            <a href="/users/new"><button type="button" class="btn btn-outline-success">+</button></a>
+            <a href="/users/new"><button type="button" class="btn btn-success">+</button></a>
         </h1>
         <hr>
         <div class="card-decks">
@@ -9,7 +9,7 @@
             {{#each users}}
                 <div class="col-sm-6">
                     <div class="card">
-                        <img class="img-fluid img-thumbnail" src="{{this.imageUrl}}" class="card-img-top" alt="...">
+                        <img class="img-fluid img-thumbnail" src="{{this.imgPath}}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{this.name}}</h5>
                             <p class="card-text">With supporting text below as a natural lead-in to additional content.

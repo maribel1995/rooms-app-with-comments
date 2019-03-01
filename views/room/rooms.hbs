@@ -8,12 +8,12 @@
             {{#each rooms}}
                 <div class="col-sm-6">
                     <div class="card">
-                        <img class="img-fluid img-thumbnail" src="{{this.imageUrl}}" class="card-img-top" alt="...">
+                        <img class="img-fluid img-thumbnail" src="{{this.imgPath}}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{this.name}}</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.
+                            <p class="card-text">{{this.description}}
                             </p>
-                            <a href="/users/{{this._id}}/edit" class="btn btn-info btn-md btn-block">edit</a>
+                            <a href="/rooms/{{this._id}}/edit" class="btn btn-info btn-md btn-block">edit</a>
                         </div>
                     </div>
                 </div>

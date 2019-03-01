@@ -62,11 +62,11 @@ app.use((req, res, next) => {
     // handle specific listen errors with friendly messages
     switch (error.code) {
       case 'EACCES':
-        console.error(`Port 3000 requires elevated privileges`);
+        console.error(`Port ${process.env.PORT} requires elevated privileges`);
         process.exit(1);
         break;
       case 'EADDRINUSE':
-        console.error(`Port 3000 is already in use`);
+        console.error(`Port ${process.env.PORT} is already in use`);
         process.exit(1);
         break;
       default:
@@ -74,8 +74,8 @@ app.use((req, res, next) => {
     }
   });
   
-  server.listen(3000, () => {
-    console.log(`Listening on http://localhost:3000`);
+  server.listen(process.env.PORT, () => {
+    console.log(`Listening on http://localhost:${process.env.PORT}`);
   });
 
 

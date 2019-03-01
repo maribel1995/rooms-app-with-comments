@@ -1,17 +1,17 @@
 <div class="box">
     <div class="container">
-        <h3>Add new room</h3>
+        <h3>Edit new room</h3>
         <hr>
-        <form method="POST" action="/rooms" enctype="multipart/form-data">
+        <form method="POST" action="/rooms/{{room._id}}" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="exampleInputName">Room's name</label>
                 <input type="text" name="name" class="form-control" id="exampleInputName" aria-describedby=""
-                    placeholder="Street Park room">
+                    placeholder="Street Park room" value="{{room.name}}">
             </div>
             <div class="form-group">
                 <label for="validationTextarea">Description</label>
                 <textarea class="form-control" name="description" id="validationTextarea"
-                    placeholder="Street Park is a confy room with a bea..." required></textarea>
+                    placeholder="Street Park is a confy room with a bea..." required>{{room.description}}</textarea>
             </div>
             <div class="form-group">
                 <div class="input-group mb-3">
@@ -20,7 +20,7 @@
                     </div>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="inputGroupFile01" name="photo">
-                        <label class="custom-file-label" for="inputGroupFile01">Choose Image</label>
+                        <label class="custom-file-label" for="inputGroupFile01">{{room.imgName}}</label>
                     </div>
                 </div>
             </div>
@@ -29,8 +29,11 @@
                 <input type="text" name="" class="form-control" id="exampleInputName" aria-describedby=""
                     placeholder="Pedro Sampaio">
             </div>
-            <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block">Save</button>
         </form>
+        <div class="button-wrapper">
+        <a href="/rooms/{{room._id}}/delete"><button type="button" class="btn btn-danger btn-lg btn-block">Delete Room</button></a>
+        </div>
         <a href="/rooms">Back to the rooms list</a>
     </div>
 </div>

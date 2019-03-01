@@ -5,9 +5,10 @@ const userSchema = new Schema({
     name: String,
     email: String,
     password: String,
-    imageUrl: String,
+    imgName: String,
+    imgPath: String,
     token: String,
-    status: {type: String, enum:['active', 'pending'], default:'pending'},
+    status: { type: String, enum: ['active', 'pending'], default: 'pending' },
     facebookID: String,
     googleID: String
 });
