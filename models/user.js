@@ -6,7 +6,7 @@ const userSchema = new Schema({
     email: String,
     password: String,
     imgName: String,
-    imgPath: String,
+    imgPath: {type: String, default: 'https://res.cloudinary.com/dxemyxjas/image/upload/v1551523115/rooms-app/profile-no.png'},
     token: String,
     status: { type: String, enum: ['active', 'pending'], default: 'pending' },
     facebookID: String,

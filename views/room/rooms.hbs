@@ -1,25 +1,26 @@
 <div class="box">
     <div class="container">
         <h1>Rooms
-            <a href="/rooms/new"><button type="button" class="btn btn-success">+</button></a>
+            <a href="/rooms/new"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a>
         </h1>
+         <hr>
         <div class="card-decks">
             <div class="row">
             {{#each rooms}}
                 <div class="col-sm-6">
                     <div class="card">
-                        <img class="img-fluid img-thumbnail" src="{{this.imgPath}}" class="card-img-top" alt="...">
+                        <img class="img-fluid img-thumbnail" style="width: 500px; height: 400px;" src="{{this.imgPath}}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{this.name}}</h5>
                             <p class="card-text">{{this.description}}
                             </p>
-                            <a href="/rooms/{{this._id}}/edit" class="btn btn-info btn-md btn-block">edit</a>
+                            <a href="/rooms/{{this._id}}/edit" class="btn btn-dark"><i class="fas fa-cog"></i></a>
                         </div>
                     </div>
                 </div>
             {{/each}}
             </div>
         </div>
-        <hr>
+      
     </div>
 </div>

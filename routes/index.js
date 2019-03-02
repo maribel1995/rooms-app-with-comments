@@ -29,7 +29,7 @@ router.get('/users', (req, res, next) => {
 });
 //POST => create a new user to db
 router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
-    
+
 
     const {
         name,
@@ -42,10 +42,10 @@ router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
     const newUser = new User({
         name,
         email,
-        imgName : req.file.originalname,
-        imgPath : req.file.url,
-        password : hashPass
-        
+        imgName: req.file ? req.file.originalname : '',
+        imgPath: req.file ? req.file.url : '',
+        password: hashPass
+
     });
 
     newUser.save(error => {
@@ -75,13 +75,20 @@ router.post('/users/:user_id', uploadCloud.single('photo'), (req, res, next) => 
         user.name = req.body.name;
         user.email = req.body.email;
         user.password = req.body.password;
-        user.imgName = req.file.originalname;
-        user.imgPath = req.file.url;
+        if (req.file) {
+            user.imgName = req.file.originalname;
+            user.imgPath = req.file.url;
+        } 
+        
         user.save(error => {
             if (error) {
                 next(error);
             } else {
-                res.redirect(`/users`);
+                if (req.body.profile == 'profile') {
+                    res.redirect(`/profile/${user._id}`);
+                } else {
+                    res.redirect(`/users`);
+                }
             }
         })
 
@@ -96,10 +103,26 @@ router.get('/users/:user_id/delete', (req, res, next) => {
         if (error) {
             next(error);
         } else {
-            res.redirect('/users')
+            if (req.body.profile == 'profile') {
+                res.redirect(`/`);
+            } else {
+                res.redirect(`/users`);
+            }
         }
     })
-})
+});
+//GET => Profile User
+router.get('/profile/:user_id', (req, res, next) => {
+    User.findById(req.params.user_id, (error, user) => {
+        if (error) {
+            next(error);
+        } else {
+            res.render('user/profile', {
+                user
+            })
+        }
+    })
+});
 
 
 
