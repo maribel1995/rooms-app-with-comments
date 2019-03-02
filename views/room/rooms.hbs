@@ -8,13 +8,19 @@
             <div class="row">
             {{#each rooms}}
                 <div class="col-sm-6">
-                    <div class="card">
-                        <img class="img-fluid img-thumbnail" style="width: 500px; height: 400px;" src="{{this.imgPath}}" class="card-img-top" alt="...">
+                    <div class="card" style="margin-bottom:40px; border:2px solid rgba(0,0,0,.125)">
+                        <span class="card-img-top img-fluid img-thumbnail" style="background-image: url({{this.imgPath}}); width: 550px; height: 400px; background-size: cover; background-position: center;" ></span>
                         <div class="card-body">
-                            <h5 class="card-title">{{this.name}}</h5>
+                            <h4 class="card-title"><a href="/rooms/{{this._id}}/detail">{{this.name}}</a>
+                                
+                                <i class="fas fa-star"></i>
+                                
+                            </h4>
                             <p class="card-text">{{this.description}}
                             </p>
+                            {{#if owned}}
                             <a href="/rooms/{{this._id}}/edit" class="btn btn-dark"><i class="fas fa-cog"></i></a>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

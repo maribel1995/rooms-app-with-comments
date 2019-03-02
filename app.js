@@ -116,14 +116,20 @@ passport.use(new LocalStrategy({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//logado
+//helpers
 app.use((req,res, next) => {
+  //currentUser
   if(req.isAuthenticated()){
     res.locals.currentUser = req.user;
+  }
+  //admin
+  if(req.user && req.user.type == 'admin'){
+    res.locals.admin = true;
   }
 
   next();
 })
+
 
 
 //hbs
