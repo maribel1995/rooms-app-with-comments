@@ -1,3 +1,4 @@
+
 .main{
     display:flex;
     margin-top: 50px;
@@ -23,4 +24,14 @@ margin-left: 20px;
 }
 .button-wrapper{
     margin-top:10px;
+}
+.bg-color{
+    background-color: #FF5A5F !important;
+}
+.img-detail{
+    width: 800px;
+    height: 400px;
+}
+.review{
+    font-size: 1.9rem !important;
 }

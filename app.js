@@ -94,7 +94,6 @@ passport.use(new LocalStrategy({
   //passReqToCallback:true
 }, (email, password, done) => {
   User.findOne({ email }, (err, user) => {
-    console.log("user")
     if (err) {
       console.log("Incorrect")
       return done(err);

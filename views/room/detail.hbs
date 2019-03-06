@@ -1,3 +1,32 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="d-inline-flex">
+        <div class="container">
+            <img class="img-fluid img-detail" src="{{room.imgPath}}" alt="Card image">
+        </div>
+        <div>
+            <h1 class="display-4">{{room.name}}</h1>
+            <p class="lead">{{room.description}}</p>
+        </div>
+    </div>
+    <div class="container-fluid">
+            <h1 class="review display-4 m-3">Reviews</h1>
+        {{#each room.reviews}}
+        <div class="card" style="margin-bottom: 10px;">
+            <h5 class="card-header">
+                <img class="img-thumbnail" style="width: 50px; height:50px" src="{{this.user.imgPath}}">
+                {{this.user.name}}</h5>
+
+            <div class="card-body">
+                <p class="card-text">{{this.comment}}</p>
+                <p class="card-text text-muted"><span class="rating">{{this.rating}}</span></p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+
+
 <div class="card">
     <div class="card-header text-center">
         <h3>{{room.name}}</h3>
@@ -6,58 +35,58 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="card">
-                   <img class="card-img" src="{{room.imgPath}}" alt="Card image">
+                    <img class="card-img" src="{{room.imgPath}}" alt="Card image">
                 </div>
             </div>
             <div class="col-sm-6" style="max-height:380px; overflow-y:scroll;">
                 {{#each room.reviews}}
-                     <div class="card" style="margin-bottom: 10px;">
-                        <h5 class="card-header">
-                            <img class="img-thumbnail" style="width: 50px; height:50px" src="{{this.user.imgPath}}">
-                            {{this.user.name}}</h5>
-                        
-                        <div class="card-body">
-                            <p class="card-text">{{this.comment}}</p>
-                            <p class="card-text text-muted"> rating: <span class="rating">{{this.rating}}</span></p>
-                        </div>
+                <div class="card" style="margin-bottom: 10px;">
+                    <h5 class="card-header">
+                        <img class="img-thumbnail" style="width: 50px; height:50px" src="{{this.user.imgPath}}">
+                        {{this.user.name}}</h5>
+
+                    <div class="card-body">
+                        <p class="card-text">{{this.comment}}</p>
+                        <p class="card-text text-muted"> rating: <span class="rating">{{this.rating}}</span></p>
                     </div>
-                {{/each}}    
+                </div>
+                {{/each}}
             </div>
         </div>
     </div>
     <div class="card-footer">
-        
+
 
         <h5>Write your review about this room</h5>
-                        <form method="POST" action="/reviews" >
-                            <input type="hidden" name="room_id" value="{{room._id}}">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Review</span>
-                                    </div>
-                                     <textarea class="form-control" name="comment" style="min-height: 150px;" aria-label="With textarea"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text" for="inputGroupSelect01">Rating</label>
-                                            </div>
-                                            <select class="custom-select" id="inputGroupSelect01" name="rating">
-                                                <option selected>Choose...</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                    </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-success btn-lg btn-block">Send</button>
-                        </form>
-        {{#each review}}
-        {{/each}}
+        <form method="POST" action="/reviews">
+            <input type="hidden" name="room_id" value="{{room._id}}">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Review</span>
+                    </div>
+                    <textarea class="form-control" name="comment" style="min-height: 150px;"
+                        aria-label="With textarea"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Rating</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01" name="rating">
+                        <option selected>Choose...</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg btn-block">Send</button>
+        </form>
     </div>
 </div>
+<script src="/script/main.js"></script>

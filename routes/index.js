@@ -28,7 +28,7 @@ router.get('/users', (req, res, next) => {
                     users: usersFromDB
                 })
             }else{
-                res.redirect('/');
+                res.render('not-found');
             }
         }
     })
@@ -159,7 +159,7 @@ router.get('/rooms', (req, res, next) => {
 router.get('/rooms/new', (req, res, next) => {
     res.render('room/new');
 });
-//POST => create a new user to db
+//POST => create a new room to db
 router.post('/rooms', uploadCloud.single('photo'), (req, res, next) => {
     if(!req.user){
         res.redirect('/login')
@@ -168,8 +168,8 @@ router.post('/rooms', uploadCloud.single('photo'), (req, res, next) => {
         name: req.body.name,
         description: req.body.description,
         owner: req.user,
-        imgName: req.file.originalname,
-        imgPath: req.file.url
+        imgName: req.file ? req.file.originalname : 'default',
+        imgPath: req.file && req.file.url
     });
 
     newRoom.save(error => {
@@ -204,8 +204,8 @@ router.post('/rooms/:room_id', uploadCloud.single('photo'), (req, res, next) => 
     Room.findById(req.params.room_id, (error, room) => {
         room.name = req.body.name;
         room.description = req.body.description;
-        room.imgName = req.file.originalname;
-        room.imgPath = req.file.url;
+        room.imgName = req.file ? req.file.originalname : room.imgName;
+        room.imgPath = req.file ? req.file.url : room.imgPath;
         room.save(error => {
             if (error) {
                 next(error);
