@@ -15,9 +15,9 @@ loadStars = (ratings) => {
 }
 
 window.onload = () => {
+  const ratings = [...document.querySelectorAll(".rating")];
+  loadStars(ratings);
     startMap();
-    const ratings = [...document.querySelectorAll(".rating")];
-    loadStars(ratings);
 } 
 
 function startMap() {
