@@ -343,6 +343,14 @@ router.post('/reviews', (req, res, next) => {
 
 })
 
+//API 
+router.get('/api/rooms', (req, res, next) => {
+    Room.find()
+    .then(rooms => {
+        res.status(200).json({rooms});
+    })
+    .catch(error => {throw new Error(error)})
+})
 
 
 module.exports = router;
