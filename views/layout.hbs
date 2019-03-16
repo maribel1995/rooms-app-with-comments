@@ -10,7 +10,7 @@
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEYBmugGJARf1eHJ1xbSaCRDY2xloGN8Q"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key={{keyMaps}}"></script>
    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
     <script src="/script/main.js"></script>
 
@@ -33,6 +33,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/rooms">Rooms</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/filter">Filter</a>
+                </li>
                 {{#if admin}}
                 <li class="nav-item">
                     <a class="nav-link" href="/users">Users</a>
@@ -50,7 +53,7 @@
                     <a class="nav-link" href="/profile/{{currentUser._id}}">{{currentUser.name}}<span
                             class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item"></li>
+                <li class="nav-item">
                 <a class="nav-link" href="/logout">Sign out</a>
                 </li>
                 {{else}}
@@ -62,19 +65,7 @@
         </div>
     </nav>
     <div class="main">
-        {{!-- <div class="vertical-menu bg-dark">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Active</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-            </ul>
-        </div> --}}
+         
         <div class="content">
 
             {{{body}}}

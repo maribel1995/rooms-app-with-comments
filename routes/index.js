@@ -39,7 +39,9 @@ router.get('/users', (req, res, next) => {
     User.find()
         .then(users => {
             if (isAdmin(req.user)) {
-                res.render('user/users', { users })
+                res.render('user/users', {
+                    users
+                })
             } else {
                 res.render('not-found');
             }
@@ -48,6 +50,22 @@ router.get('/users', (req, res, next) => {
             throw new Error(error);
         });
 });
+
+//GET => render filter users
+router.get('/filter', (req, res, next) => {
+    User.find(req.query)
+        .then(users => {
+                res.render('user/filter', {
+                    users
+                })
+            
+        })
+        .catch(error => {
+            throw new Error(error);
+        });
+});
+
+
 //POST => create a new user to db
 router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
 
@@ -56,10 +74,15 @@ router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
         name,
         email,
         password,
-        type
+        type,
+        hairColor,
+        hairType,
+        eyeColor,
     } = req.body;
 
-    User.findOne({ 'email': email })
+    User.findOne({
+            'email': email
+        })
         .then(user => {
             if (user !== null) {
                 res.render("user/new", {
@@ -83,6 +106,9 @@ router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
                 imgPath: req.file ? req.file.url : 'https://res.cloudinary.com/dxemyxjas/image/upload/v1551523115/rooms-app/profile-no.png',
                 password: hashPass,
                 type,
+                hairColor,
+                hairType,
+                eyeColor,
                 token
             });
 
@@ -92,30 +118,50 @@ router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
                 .then(user => {
                     //Nodemailer
                     transporter.sendMail({
-                        from: '"RoomsWorld 👻" <noreply@roomsworld.com>>',
-                        to: email,
-                        subject: 'pls, confirm your e-mail - RoomsWorld',
-                        html: templates.templateExample(link, req.user.name),
-                    })
-                        .then(info => res.redirect('/'))
-                        .catch(error => { throw new Error(error) });
+                            from: '"RoomsWorld 👻" <noreply@roomsworld.com>>',
+                            to: email,
+                            subject: 'pls, confirm your e-mail - RoomsWorld',
+                            html: templates.templateExample(link, req.user.name),
+                        })
+                        .then(info => res.redirect('/users'))
+                        .catch(error => {
+                            throw new Error(error)
+                        });
                 })
-                .catch(err => { throw new Error(err) })
+                .catch(err => {
+                    throw new Error(err)
+                })
         })
-        .catch(err => { throw new Error(err) });
+        .catch(err => {
+            throw new Error(err)
+        });
 });
 
 //GET => confirm e-mail
 router.get('/confirm/:token', (req, res) => {
-    const { token } = req.params;
+    const {
+        token
+    } = req.params;
 
-    User.findOneAndUpdate({ token }, { $set: { status: 'active' } }, { new: true })
+    User.findOneAndUpdate({
+            token
+        }, {
+            $set: {
+                status: 'active'
+            }
+        }, {
+            new: true
+        })
         .then(user => {
             // if (user.status === 'active') res.status(500).send('user already confirmed');
 
-            (user) ? res.render("user/confirmation", { user }) : res.status(500).send('user not found');
+            (user) ? res.render("user/confirmation", {
+                user
+            }): res.status(500).send('user not found');
         })
-        .catch(err => { throw new Error(err) });
+        .catch(err => {
+            throw new Error(err)
+        });
 
 });
 
@@ -288,10 +334,19 @@ router.post('/rooms/:room_id', uploadCloud.single('photo'), (req, res, next) => 
 
 //GET => rooms detail
 router.get('/rooms/:id/detail', (req, res, next) => {
-    Room.findOne({ _id: req.params.id })
-        .populate({ path: 'reviews', populate: { path: 'user' } })
+    Room.findOne({
+            _id: req.params.id
+        })
+        .populate({
+            path: 'reviews',
+            populate: {
+                path: 'user'
+            }
+        })
         .then(room => {
-            res.render('room/detail', { room })
+            res.render('room/detail', {
+                room
+            })
         })
         .catch(error => {
             console.log(error);
@@ -319,22 +374,31 @@ router.post('/reviews', (req, res, next) => {
         res.redirect('/login');
     } else {
         const roomId = req.body.room_id;
-        const { comment, rating } = req.body;
+        const {
+            comment,
+            rating
+        } = req.body;
         const newReview = new Review({
-            comment, rating, user: req.user
+            comment,
+            rating,
+            user: req.user
         });
         newReview.save()
             .then(review => {
-                Room.update(
-                    { _id: roomId },
-                    { $push: { reviews: review._id } },
-                    { new: true }
-                ).then(room => {
+                Room.update({
+                    _id: roomId
+                }, {
+                    $push: {
+                        reviews: review._id
+                    }
+                }, {
+                    new: true
+                }).then(room => {
                     res.redirect(`/rooms/${roomId}/detail`)
                 }).
-                    catch(err => {
-                        throw new Error(err);
-                    })
+                catch(err => {
+                    throw new Error(err);
+                })
             })
             .catch(err => {
                 throw new Error(err);
@@ -346,12 +410,15 @@ router.post('/reviews', (req, res, next) => {
 //API 
 router.get('/api/rooms', (req, res, next) => {
     Room.find()
-    .then(rooms => {
-        res.status(200).json({rooms});
-    })
-    .catch(error => {throw new Error(error)})
+        .then(rooms => {
+            res.status(200).json({
+                rooms
+            });
+        })
+        .catch(error => {
+            throw new Error(error)
+        })
 })
 
 
 module.exports = router;
-

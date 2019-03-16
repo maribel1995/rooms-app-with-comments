@@ -4,6 +4,9 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     name: String,
     email: String,
+    hairColor: String,
+    hairType: String,
+    eyeColor: String,
     password: String,
     type: {type: String, enum:['user', 'admin'], default: 'user'},
     imgName: String,

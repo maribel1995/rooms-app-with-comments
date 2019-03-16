@@ -1,3 +1,5 @@
+
+    
 <div class="box">
     <div class="container">
         <h3>Add new user</h3>
@@ -36,16 +38,43 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="exampleFormControlSelect2">Cor do cabelo</label>
+                <select  name="hairColor" class="form-control" id="exampleFormControlSelect2">
+                    <option value='loiro'>Loiro</option>
+                    <option value='castanho'>Castanho</option>
+                    <option value='preto'>Preto</option>
+                    <option value='colorido'> Colorido</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Tipo do cabelo</label>
+                <select  name="hairType" class="form-control" id="exampleFormControlSelect2">
+                     <option value='longo'>Longo</option>
+                    <option value='curto'>Curto</option>
+                    <option value='enrolado'>enrolado</option>
+                </select>
+            </div>
+             <div class="form-group">
+                <label for="exampleFormControlSelect2">Cor do olho</label>
+                <select  name="eyeColor" class="form-control" id="exampleFormControlSelect2">
+                     <option value='verde'>Verde</option>
+                    <option value='azul'>Azul</option>
+                    <option value='castanho'>Castanho</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <input type="radio" name="type" value="user" aria-label="Radio button for following text input">
+                            <input type="radio" name="type" value="user"
+                                aria-label="Radio button for following text input">
                         </div>
                     </div>
                     <input type="text" class="form-control" value="User" disabled>
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <input type="radio" name="type" value="admin" aria-label="Radio button for following text input">
+                            <input type="radio" name="type" value="admin"
+                                aria-label="Radio button for following text input">
                         </div>
                     </div>
                     <input type="text" class="form-control" value="Admin" disabled>
@@ -55,4 +84,5 @@
         </form>
         <a href="/users">Back to the users list</a>
     </div>
+</div>
 </div>
