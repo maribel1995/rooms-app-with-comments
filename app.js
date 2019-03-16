@@ -18,7 +18,7 @@ const app = express();
 
 //conection
 mongoose
-.connect('mongodb://localhost/rooms-app-with-comments', {useNewUrlParser: true})
+.connect(process.env.MONGODB_URI, {useNewUrlParser: true})
 .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
 })
@@ -57,7 +57,7 @@ passport.deserializeUser((id, done) => {
 passport.use(new FacebookStrategy({
   clientID: '346323932635843',
   clientSecret: '7a84c2145d13339d0a9ec9c180f06c6d',
-  callbackURL: "http://localhost:3000/auth/facebook/callback",
+  callbackURL: "/facebook/callback",
   profileFields: ['id', 'displayName', 'photos', 'email']
 },
 (accessToken, refreshToken, profile, done) =>{
