@@ -185,8 +185,7 @@ router.post('/users/:user_id', uploadCloud.single('photo'), (req, res, next) => 
         const salt = bcrypt.genSaltSync(bcryptSalt);
         user.name = req.body.name;
         user.email = req.body.email;
-        user.password = bcrypt.hashSync(req.body.password, salt);;
-        user.type = req.body.type;
+        user.password = bcrypt.hashSync(req.body.password, salt);
         if (req.file) {
             user.imgName = req.file.originalname;
             user.imgPath = req.file.url;
