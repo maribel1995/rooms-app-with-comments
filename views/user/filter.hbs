@@ -7,15 +7,26 @@
                     <option value='loiro'>Loiro</option>
                     <option value='castanho'>Castanho</option>
                     <option value='preto'>Preto</option>
-                    <option value='colorido'> Colorido</option>
+                    <option value='ruivo'>Ruivo</option>
+                    <option value='grisalho'>Grisalho</option>
+                    <option value='cor artificial'> Cor artificial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Tamanho do cabelo</label>
+                <select multiple name="hairLength" class="form-control" id="exampleFormControlSelect2">
+                    <option value='longo'>Longo</option>
+                    <option value='curto'>Curto</option>
+                    <option value='medio'>Medio</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlSelect2">Tipo do cabelo</label>
                 <select multiple name="hairType" class="form-control" id="exampleFormControlSelect2">
-                    <option value='longo'>Longo</option>
-                    <option value='curto'>Curto</option>
-                    <option value='enrolado'>enrolado</option>
+                    <option value='liso'>Liso</option>
+                    <option value='ondulado'>Ondulado</option>
+                    <option value='cacheado'>Cacheado</option>
+                    <option value='crespo'>Crespo</option>
                 </select>
             </div>
             <div class="form-group">
@@ -23,26 +34,44 @@
                 <select multiple name="eyeColor" class="form-control" id="exampleFormControlSelect2">
                     <option value='verde'>Verde</option>
                     <option value='azul'>Azul</option>
-                    <option value='castanho'>Castanho</option>
+                    <option value='castanho escuro'>Castanho escuro</option>
+                    <option value='castanho claro'>Castanho claro</option>
                 </select>
             </div>
-            <input type="submit"/>
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Cor da pele</label>
+                <select multiple name="skinTone" class="form-control" id="exampleFormControlSelect2">
+                    <option value='amarela'>Amarela</option>
+                    <option value='branca'>Branca</option>
+                    <option value='indígena'>Indígena</option>
+                    <option value='afro'>Afro</option>
+                    <option value='parda'>Parda</option>
+                </select>
+            </div>
+            <input type="submit" />
         </form>
     </div>
     <div class="box">
         <div class="container">
-            <h1>Users Filter   
+            <h1>Users Filter
             </h1>
             <hr>
+            <p>filters: {{filters}}</p>
             <div class="card-decks">
                 <div class="row">
                     {{#each users}}
                     <div class="col-sm-3">
                         <div class="card" style="margin-bottom:40px; border:2px solid rgba(0,0,0,.125)">
                             <span class="card-img-top img-fluid img-thumbnail"
-                                style="background-image: url({{this.imgPath}}); width: 300px; height: 200px; background-size: cover; background-position: center;"></span>
+                                style="background-image: url({{this.profileImg}}); width: 300px; height: 200px; background-size: cover; background-position: center;"></span>
                             <div class="card-body">
                                 <h5 class="card-title">{{this.name}}</h5>
+                                <p><strong>Cor do cabelo</strong> : {{this.hairColor}}</p>
+                                <p><strong>Tamanho do cabelo</strong> : {{this.hairLength}}</p>
+                                <p><strong>Tipo do cabelo</strong> : {{this.hairType}}</p>
+                                <p><strong>Cor do olho</strong> : {{this.eyeColor}}</p>
+                                <p><strong>Cor da pele</strong> : {{this.skinTone}}</p>
+                                <p><strong>Etnia</strong> : {{this.ethnicity}}</p>
                                 <a href="/users/{{this._id}}/edit" class="btn btn-dark"><i class="fas fa-cog"></i></a>
                             </div>
                         </div>

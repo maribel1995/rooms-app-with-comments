@@ -26,8 +26,22 @@ isOwner = (user, room) => user && (room.owner.equals(user._id));
 
 //GET => render home
 router.get('/', (req, res, next) => {
+    var accountSid = 'AC47de170971bd1478de7edcd06ee469c9'; // Your Account SID from www.twilio.com/console
+    var authToken = 'b9781e612fbc19513ba1fa8cfd0da087';   // Your Auth Token from www.twilio.com/console
 
+    var twilio = require('twilio');
+    var client = new twilio(accountSid, authToken);
+    client.messages
+        .create({
+            body: 'Hello there!',
+            from: 'whatsapp:+14155238886',
+            to: 'whatsapp:+5511972616068'
+        })
+        .then(message => console.log(message.sid))
+        
+        .catch(error => console.log(error));
     res.render('index');
+
 });
 
 //GET => render add new user
@@ -51,14 +65,38 @@ router.get('/users', (req, res, next) => {
         });
 });
 
+filtro = (obj) => {
+    const keys = Object.keys(obj);
+    let str = '';
+    if (typeof keys === 'string') {
+        str = `${keys}: ${Object.values(obj)} `;
+    } else {
+        keys.forEach((k, i) => {
+            const values = Object.values(obj)[i];
+            if (typeof values === 'string') {
+                str = str + `${k}: ${values} `
+            } else {
+                values.forEach(value => {
+                    str = str + `${k}: ${value} `;
+                })
+
+            }
+        });
+    }
+
+    return str;
+}
+
 //GET => render filter users
 router.get('/filter', (req, res, next) => {
+    console.log(req.query)
     User.find(req.query)
         .then(users => {
-                res.render('user/filter', {
-                    users
-                })
-            
+            res.render('user/filter', {
+                users,
+                filters: filtro(req.query)
+            })
+
         })
         .catch(error => {
             throw new Error(error);
@@ -81,8 +119,8 @@ router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
     } = req.body;
 
     User.findOne({
-            'email': email
-        })
+        'email': email
+    })
         .then(user => {
             if (user !== null) {
                 res.render("user/new", {
@@ -102,8 +140,7 @@ router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
             const newUser = new User({
                 name,
                 email,
-                imgName: req.file ? req.file.originalname : 'default',
-                imgPath: req.file ? req.file.url : 'https://res.cloudinary.com/dxemyxjas/image/upload/v1551523115/rooms-app/profile-no.png',
+                profileImg: req.file ? req.file.url : 'https://res.cloudinary.com/dxemyxjas/image/upload/v1551523115/rooms-app/profile-no.png',
                 password: hashPass,
                 type,
                 hairColor,
@@ -118,11 +155,11 @@ router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
                 .then(user => {
                     //Nodemailer
                     transporter.sendMail({
-                            from: '"RoomsWorld 👻" <noreply@roomsworld.com>>',
-                            to: email,
-                            subject: 'pls, confirm your e-mail - RoomsWorld',
-                            html: templates.templateExample(link, req.user.name),
-                        })
+                        from: '"RoomsWorld 👻" <noreply@roomsworld.com>>',
+                        to: email,
+                        subject: 'pls, confirm your e-mail - RoomsWorld',
+                        html: templates.templateExample(link, req.user.name),
+                    })
                         .then(info => res.redirect('/users'))
                         .catch(error => {
                             throw new Error(error)
@@ -144,8 +181,8 @@ router.get('/confirm/:token', (req, res) => {
     } = req.params;
 
     User.findOneAndUpdate({
-            token
-        }, {
+        token
+    }, {
             $set: {
                 status: 'active'
             }
@@ -157,7 +194,7 @@ router.get('/confirm/:token', (req, res) => {
 
             (user) ? res.render("user/confirmation", {
                 user
-            }): res.status(500).send('user not found');
+            }) : res.status(500).send('user not found');
         })
         .catch(err => {
             throw new Error(err)
@@ -187,8 +224,7 @@ router.post('/users/:user_id', uploadCloud.single('photo'), (req, res, next) => 
         user.email = req.body.email;
         user.password = bcrypt.hashSync(req.body.password, salt);
         if (req.file) {
-            user.imgName = req.file.originalname;
-            user.imgPath = req.file.url;
+            user.profileImg = req.file.url;
         }
 
         user.save(error => {
@@ -198,7 +234,7 @@ router.post('/users/:user_id', uploadCloud.single('photo'), (req, res, next) => 
                 if (req.body.profile == 'profile') {
                     res.redirect(`/profile/${user._id}`);
                 } else {
-                    res.redirect(`/users`);
+                    res.redirect(`/filter`);
                 }
             }
         })
@@ -281,7 +317,7 @@ router.post('/rooms', uploadCloud.single('photo'), (req, res, next) => {
             name: req.body.name,
             description: req.body.description,
             owner: req.user,
-            imgName: req.file ? req.file.originalname : 'default',
+            imgName: req.file && req.file.originalname,
             imgPath: req.file && req.file.url,
             location
         });
@@ -334,8 +370,8 @@ router.post('/rooms/:room_id', uploadCloud.single('photo'), (req, res, next) => 
 //GET => rooms detail
 router.get('/rooms/:id/detail', (req, res, next) => {
     Room.findOne({
-            _id: req.params.id
-        })
+        _id: req.params.id
+    })
         .populate({
             path: 'reviews',
             populate: {
@@ -387,17 +423,17 @@ router.post('/reviews', (req, res, next) => {
                 Room.update({
                     _id: roomId
                 }, {
-                    $push: {
-                        reviews: review._id
-                    }
-                }, {
-                    new: true
-                }).then(room => {
-                    res.redirect(`/rooms/${roomId}/detail`)
-                }).
-                catch(err => {
-                    throw new Error(err);
-                })
+                        $push: {
+                            reviews: review._id
+                        }
+                    }, {
+                        new: true
+                    }).then(room => {
+                        res.redirect(`/rooms/${roomId}/detail`)
+                    }).
+                    catch(err => {
+                        throw new Error(err);
+                    })
             })
             .catch(err => {
                 throw new Error(err);
