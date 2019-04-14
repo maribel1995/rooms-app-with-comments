@@ -103,6 +103,19 @@ router.get('/filter', (req, res, next) => {
         });
 });
 
+//GET => api filter users
+router.get('/api/filter', (req, res, next) => {
+    console.log(req.query)
+    User.find(req.query)
+        .then(users => {
+            res.status(200).json({ users });
+
+        })
+        .catch(error => {
+            throw new Error(error);
+        });
+});
+
 
 //POST => create a new user to db
 router.post('/users', uploadCloud.single('photo'), (req, res, next) => {
